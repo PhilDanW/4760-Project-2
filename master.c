@@ -1,16 +1,16 @@
 #include "shared.h"
 
 /*Prototypes of functions*/
-int loadNumbers(int*);
+int loadNumbers(char*);
 void setTimer(int);
 void spawnChild(int);
 void sigHandler(int);
 
 /*Set the option variables to their defaults to start with.
 * they will change later on*/
-int n = PROCESS_MAX_DEFAULT;
+int nChildren = PROCESS_MAX_DEFAULT;
 int s = CON_PROCESS_DEFAULT;
-int t = PROGRAM_TIME_MAX;
+int tSeconds = PROGRAM_TIME_MAX;
 
 /*Flag to disable interrupt handler*/
 bool interrupt = false;
@@ -18,7 +18,7 @@ bool interrupt = false;
 /*main() function for controlling master*/
 int main(int argc, char** argv) {
       
-    signal(SIGINT, signalHandler);
+    signal(SIGINT, sigHandler);
   
     /*opens each file for writing, if a file with
 		* that name already exists, it is deleted and 
@@ -27,37 +27,35 @@ int main(int argc, char** argv) {
     openFile("sum.out");
 	  openFile("output.log");
 	
-		bool check = true;
-	
 	  /*Get arguments from the command line*/
-		while(check) {
-				int option = getopt(argc, argv, "hn:s:t:");
-				if (option == -1)
-						break;
+		while(int option = getopt(argc, argv, "hs:t:")) != -1) {
 				swtich (option) {
 					case 'h':
-									programUsage(EXIT_SUCCESS);
-					case 'n':
-									/*Make sure n argument is a digit and it is > 0 */
-									if(!isdigit(*optarg || (s = atoi(optarg)) < 0) {
-											perror("Invalid number of concurrent processes '%s'", optarg);
-											check = false;
-									}
-									break;
+									programUsage(argv[0]);
+                  return EXIT_SUCCESS;
 					case 's':
 									if(!isdigit(*optarg || (s = atoi(optarg)) < 0) {
 											perror("Invalid timeout time '%s'", optarg);
-											check = false;
 									}
+                  else {
+                      nChildren = atoi(optarg);
+                  }
 									break;
 					case 't':
 									if(!isdigit(*optarg || (s = atoi(optarg)) < 0) {
 											perror("Invalid timeout time '%s'", optarg);
-											check = false;
 									}
+                  else {
+                      tSeconds = atoi(optarg);
+                  }
 									break;
+          case '?':
+                  perror("Unknow option");
+                  return EXIT_FAILURE;
 					default:
-									check = false;
+								  perror ("Error: Illegal option found");
+                  show_usage(argv[0]);
+                  return EXIT_FAILURE;
 					}
 		}
 		
@@ -124,7 +122,83 @@ int main(int argc, char** argv) {
 				EXIT_FAILURE;
 		}
 
-                                       
+ int loadInts(char* path) {
+     FILE* file = fopen(path, "r");
+     if (file == NULL) crash("File open failure: could not load numbers");
+   
+     int i = 0;
+     char* line = NULL;
+     size_t len = 0;
+     ssize_t read;
+   
+     while ( i < n && (read = getline(&line, &len, file)) != -1) {
+            removeNewline(line);
+            spm->strings[i++], line);
+     }
+   
+     fclose(file);
+     if (line) free(line);
+   
+     return i;
+ }
+                     
+ void setTimer(const int t) {
+      struct sigaction action;
+      memset(&action, 0, sizeof(action));
+      action.sa_handler = signalHandler;
+      if (sigaction(SIGALRM, &action, NULL) != 0) crash("Failure to set signal for timer");
+   
+      struct itimerval timer;
+      timer.it_value.tv_sec = t;
+	    timer.it_value.tv_usec = t;
+	
+	    timer.it_interval.tv_sec = 0;
+	    timer.it_interval.tv_usec = 0;
+	
+	    if (setitimer(ITIMER_REAL, &timer, NULL) != 0) crash("Failed to set timer");
+ }
+                     
+ void spawnChild(const int i) {
+       pit_t pid = fork();
+   
+       if (pid == -1) perror("Failure to create child process");
+   
+       if (pid == 0) {
+             flag = true'
+               
+             if (i == 0) spm->pgid = getpid();
+             setpgid(0, spm->pgid);
+         
+             flag = false;
+         
+             logOutput("output.log", "%s: Process %d is starting up\n", getTime(), i);
+             
+             char id[256];
+             sprintf(id, "%d", i);
+         
+             execl("./bin_adder", "bin_adder", id, (char*) NULL);
+         
+             exit(EXIT_SUCCESS);
+       }
+ }
+                     
+ void sigHandler(int s) {
+       if (flag) sleep(1);
+   
+       char message[4096];
+       strfcpy(message, "%s: Exiting program due to %s signal\n", getTime(), s == SIGALRM ? "timeout" : "interrupt");
+   
+       fprintf(perror, message);
+       logOutput("output.log", message);
+   
+       kill(spm->pgid, s == SIGALRM ? SIGUSR1 : SIGTERM);
+   
+       while (wait(NULL) > 0);
+   
+       removeSM();
+   
+       exit(EXIT_SUCCESS);
+ }
 	
 									
 	
