@@ -2,14 +2,15 @@
 
 /*Set the option variables to their defaults to start with.
 * they will change later on*/
-const int maxChildren = 20;
-const int maxSeconds = 100;
+
 
 
 /*main() function for controlling master*/
 int main(int argc, char** argv) {
 	
 	int option;
+	const int maxChildren = 20;
+	const int maxSeconds = 100;
 	int numChildren = 20;
 	int numSeconds = 100
 	int s;
