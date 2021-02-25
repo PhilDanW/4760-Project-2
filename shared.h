@@ -31,6 +31,9 @@ struct SharedProcessMemory {
   state State;    //flag state to enter critical section
 };
 
+int smKey;
+int smID;
+struct SharedProcessMemory* shared;
 
 
 void usage(char **);
