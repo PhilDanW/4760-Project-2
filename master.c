@@ -22,20 +22,10 @@ int main(int argc, char** argv) {
 						      usage(argv);
                   return EXIT_SUCCESS;
 					case 's':
-						      if(!isdigit(*optarg) || (s = atoi(optarg)) < 0) {
-						            perror("Invalid timeout time");
-						      }
-                  else {
-                        numChildren = atoi(optarg);
-                  }
+                  numChildren = atoi(optarg);
 									break;
 					case 't':
-									if(!isdigit(*optarg) || (s = atoi(optarg)) < 0) {
-											perror("Invalid timeout time");
-									}
-                  else {
-                      numSeconds = atoi(optarg);
-                  }
+                  numSeconds = atoi(optarg);
 									break;
           case '?':
                   perror("Unknow option");
