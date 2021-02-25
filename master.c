@@ -47,9 +47,9 @@ int main(int argc, char** argv) {
 			char fileName[30];
       strcpy(fileName, argv[index]);
 			
-			printf("%d Max Children Processes", numChildren);
-			printf("%d Seconds on Timer", numSeconds);
-			printf("%s is the Input File", fileName);
+			printf("%d Max Children Processes\n", numChildren);
+			printf("%d Seconds on Timer\n", numSeconds);
+			printf("%s is the Input File\n", fileName);
 		}
 		else {
         perror("No input file given");
