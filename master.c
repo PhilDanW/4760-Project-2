@@ -61,7 +61,11 @@ int main(int argc, char** argv) {
         usage(argv);
     }
     
-    
+    allocateSM();
+	
+		int count = getIntsFromFile(argv[optind]);
+	
+		
     
     
     
