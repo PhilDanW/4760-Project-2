@@ -45,8 +45,13 @@ int main(int argc, char** argv) {
     int index = optind;
 		if(index < argc) {
 			char fileName[30];
-      strcpy(fileName, argv[index]);
-			
+            if (argv[index] != NULL) {
+                strcpy(fileName, argv[index]);
+            }
+            else {
+                perror("missing input file");
+                usage(argv);
+            }
 			printf("%d Max Children Processes\n", numChildren);
 			printf("%d Seconds on Timer\n", numSeconds);
 			printf("%s is the Input File\n", fileName);
@@ -55,6 +60,11 @@ int main(int argc, char** argv) {
         perror("No input file given");
         usage(argv);
     }
+    
+    
+    
+    
+    
 }
                                     
 
