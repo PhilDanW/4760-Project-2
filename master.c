@@ -4,6 +4,9 @@
 * they will change later on*/
 const int maxChildren = 20;
 const int maxSeconds = 100;
+int numChildren;
+int numSeconds;
+int s;
 
 /*main() function for controlling master*/
 int main(int argc, char** argv) {
@@ -60,7 +63,7 @@ int main(int argc, char** argv) {
 		}
 		else {
         perror("No input file given");
-        usage(EXIT_FAILURE);
+        usage(argv);
     }
 }
                                     
