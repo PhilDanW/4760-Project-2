@@ -19,7 +19,7 @@
 
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
-void usage(char**);
+void usage(char **);
 void touchFile(char*);
 
 #endif
