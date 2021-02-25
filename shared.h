@@ -19,6 +19,20 @@
 
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
+enum procState { idle, want_in, in_cs };
+
+struct SharedProcessMemory {
+  size_t total;   //total number of programs in at a time
+  pid_t pidIP;    //program ID to be in process
+  bool ready;     //procress is ready tp go
+  bool complete;  //is process done?
+  int nDepth;     //depth of the node
+  int value;      //actual integer value
+  state State;    //flag state to enter critical section
+};
+
+
+
 void usage(char **);
 void touchFile(char*);
 
