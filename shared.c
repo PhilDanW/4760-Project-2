@@ -6,8 +6,8 @@ void touchFile(char* path) {
 	fclose(fp);
 }
 
-void usage(char **argv) {
-	if (status != EXIT_SUCCESS) fprintf(stderr, "Try '%s -h' for more information.\n", programName);
+void usage(char **argv, int status) {
+	if (status != EXIT_SUCCESS) perror("Try '%s -h' for more information.\n");
 	else {
 		printf("NAME\n");
 		printf("       %s - shared memorty summation app by Philip Wright", argv[0]);
