@@ -6,14 +6,14 @@ void touchFile(char* path) {
 	fclose(fp);
 }
 
-void usage(int status) {
+void usage(char **argv) {
 	if (status != EXIT_SUCCESS) fprintf(stderr, "Try '%s -h' for more information.\n", programName);
 	else {
 		printf("NAME\n");
-		printf("       %s - shared memorty summation app by Philip Wright", programName);
+		printf("       %s - shared memorty summation app by Philip Wright", argv[0]);
 		printf("\nUSAGE\n");
-		printf("       %s [-h]\n", programName);
-		printf("       %s [-n x] [-s x] [-t time] infile", programName);
+		printf("       %s [-h]\n", argv[0]);
+		printf("       %s [-n x] [-s x] [-t time] infile", argv[0]);
 		printf("\nDESCRIPTION\n");
 		printf("       -h       : Print a help message or usage, and exit\n");
 		printf("       -s x     : Number of children allowed to exist concurrently (default 20)\n");
