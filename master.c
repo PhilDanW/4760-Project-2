@@ -11,19 +11,10 @@ int main(int argc, char** argv) {
 		int option;
 		int numChildren = 20;
 		int numSeconds = 100;
-      
-    signal(SIGINT, sigHandler);
-  
-    /*opens each file for writing, if a file with
-		* that name already exists, it is deleted and 
-		* treated as a new file
-		*/
-    openFile("sum.out");
-	  openFile("output.log");
 	
 		opterr = 0;
 	  /*Get arguments from the command line*/
-		while(option = getopt(argc, argv, "hs:t:")) != -1) {
+		while((option = getopt(argc, argv, "hs:t:")) != -1) {
 				swtich (option) {
 					case 'h':
 									programUsage(argv[0]);
@@ -60,7 +51,7 @@ int main(int argc, char** argv) {
     /*See if there was an input file give in the argument list*/
     int index = optind;
 		if(index < argc) {
-			char fileName[] = argv[index];
+			char fileName[30] = argv[index];
 			
 			printf("%d Max Children Processes", numChildren);
 			printf("%d Seconds on Timer", numSeconds);
@@ -68,27 +59,11 @@ int main(int argc, char** argv) {
 		}
 		else {
         perror("No input file given");
-        programUsage(EXIT_FAILURE);
+        usage(EXIT_FAILURE);
     }
 }
                                     
-void sigHandler(int s) {
-       if (flag) sleep(1);
-   
-       char message[4096];
-       strfcpy(message, "%s: Exiting program due to %s signal\n", getTime(), s == SIGALRM ? "timeout" : "interrupt");
-   
-       fprintf(perror, message);
-       logOutput("output.log", message);
-   
-       kill(spm->pgid, s == SIGALRM ? SIGUSR1 : SIGTERM);
-   
-       while (wait(NULL) > 0);
-   
-       removeSM();
-   
-       exit(EXIT_SUCCESS);
- }
+
 	
 									
 	
